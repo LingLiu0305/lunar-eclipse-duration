@@ -3,15 +3,15 @@
 # dependencies = ["beautifulsoup4", "matplotlib"]
 # ///
 
-"""Read the cached NASA table and compare totality durations."""
+"""Read NASA's cached century catalogue and compare totality durations."""
 
-import re
+import datetime as dt
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 
-FILE = "nasa-lunar-eclipses-2021-2030.html"
+FILE = "nasa-lunar-eclipses-2001-2100.html"
 PICTURE = "total-lunar-eclipse-duration.png"
 
 HERE = Path(__file__).parent
@@ -19,54 +19,81 @@ DATA = HERE / "data" / FILE
 OUT = HERE / "out"
 
 
-def duration_to_minutes(text):
-    """Convert a duration such as '01h25m' to a number of minutes."""
-    match = re.fullmatch(r"(\d{2})h(\d{2})m", text.strip())
-    if not match:
-        raise ValueError(f"cannot read duration: {text!r}")
-    hours, minutes = (int(part) for part in match.groups())
-    return hours * 60 + minutes
+def eclipse_rows(path):
+    """Parse the fixed-width catalogue into lists of column values."""
+    soup = BeautifulSoup(path.read_bytes(), "html.parser")
+    rows = []
+
+    for block in soup.select("pre"):
+        for line in block.get_text(" ").splitlines():
+            columns = line.split()
+            if len(columns) == 18 and columns[0].isdigit() and len(columns[0]) == 5:
+                rows.append(columns)
+
+    if len(rows) != 228:
+        raise ValueError(f"Expected 228 eclipse records, found {len(rows)}")
+    return rows
 
 
 def total_eclipses(path):
-    """Return (date, minutes) pairs for total eclipses in NASA's decade table."""
-    soup = BeautifulSoup(path.read_bytes(), "html.parser")
+    """Return (date, minutes) pairs for all total eclipses in the catalogue."""
     eclipses = []
 
-    for row in soup.select("tr"):
-        cells = [cell.get_text(" ", strip=True) for cell in row.select("td")]
-        if len(cells) < 6 or cells[2] != "Total":
+    for columns in eclipse_rows(path):
+        eclipse_type = columns[8]
+        if not eclipse_type.startswith("T"):
             continue
 
-        durations = re.findall(r"\d{2}h\d{2}m", cells[5])
-        if len(durations) < 2:
-            continue
+        date = dt.datetime.strptime(" ".join(columns[1:4]), "%Y %b %d").date()
+        total_minutes = float(columns[15])
+        eclipses.append((date, total_minutes))
 
-        eclipses.append((cells[0], duration_to_minutes(durations[-1])))
-
-    if not eclipses:
-        raise ValueError("No total eclipses found. NASA may have changed the table.")
+    if len(eclipses) != 85:
+        raise ValueError(f"Expected 85 total eclipses, found {len(eclipses)}")
     return eclipses
 
 
 def main():
     eclipses = total_eclipses(DATA)
 
-    for date, minutes in eclipses:
-        print(f"{date}: {minutes} minutes of totality")
+    print(f"{DATA.name}: {len(eclipse_rows(DATA))} eclipse records")
+    print(f"{len(eclipses)} total eclipses; first one: {eclipses[0]}")
+    print(f"duration is stored as {type(eclipses[0][1]).__name__}")
 
     dates = [date for date, _ in eclipses]
     minutes = [minutes for _, minutes in eclipses]
-    colors = ["#b33a3a" if value == max(minutes) else "#6f1d1b" for value in minutes]
+    shortest = min(range(len(minutes)), key=minutes.__getitem__)
+    longest = max(range(len(minutes)), key=minutes.__getitem__)
 
-    fig, ax = plt.subplots(figsize=(10, 6))
-    bars = ax.barh(dates, minutes, color=colors)
-    ax.bar_label(bars, labels=[f"{value} min" for value in minutes], padding=4)
-    ax.set_xlabel("duration of totality (minutes)")
-    ax.set_title("Total lunar eclipse duration, 2021–2030")
-    ax.set_xlim(0, max(minutes) + 15)
-    ax.invert_yaxis()
+    fig, ax = plt.subplots(figsize=(11, 5.5))
+    ax.plot(dates, minutes, color="#d9b8ae", linewidth=1, zorder=1)
+    points = ax.scatter(
+        dates,
+        minutes,
+        c=minutes,
+        cmap="Reds",
+        edgecolor="#4c1715",
+        linewidth=0.5,
+        s=38,
+        zorder=2,
+    )
+    for index, vertical_offset in ((shortest, 9), (longest, -18)):
+        date, value = eclipses[index]
+        ax.annotate(
+            f"{date:%Y %b %d}\n{value:.1f} minutes",
+            (date, value),
+            xytext=(7, vertical_offset),
+            textcoords="offset points",
+            fontsize=9,
+        )
+
+    ax.set_ylabel("duration of totality (minutes)")
+    ax.set_title("Total lunar eclipse duration across the 21st century")
+    ax.set_ylim(0, 115)
+    ax.grid(axis="y", color="#e5e5e5", linewidth=0.8)
     ax.spines[["top", "right"]].set_visible(False)
+    colour_bar = fig.colorbar(points, ax=ax, pad=0.02)
+    colour_bar.set_label("minutes")
     fig.tight_layout()
 
     OUT.mkdir(exist_ok=True)
@@ -76,4 +103,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

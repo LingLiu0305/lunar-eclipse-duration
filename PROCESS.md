@@ -10,8 +10,8 @@ I kept the suggestion to cache NASA's original HTML page in `data/` and parse th
 
 ## One thing I rejected
 
-I rejected the initial assumption that NASA would provide a separate JSON download. I also chose not to copy the eclipse values manually into a Python list. Manual transcription would remove the connection to the original published file, could introduce mistakes, and would make the project less reproducible. Instead, the program finds the total-eclipse rows in the cached table and converts their duration values into minutes.
+I rejected the initial assumption that NASA would provide a separate JSON download. I also rejected the first horizontal bar chart after expanding the data from ten years to a full century: 85 labelled bars would be too crowded to read. Manual transcription would remove the connection to the original published file and could introduce mistakes. Instead, the program parses NASA's fixed-width catalogue and uses points to show the dates and durations of all 85 total eclipses.
 
 ## What I will review next
 
-This is the first working version of the project. I still need to decide whether highlighting only the longest eclipse communicates enough, and whether the order, labels, and colours make the comparison clear. I will update this process record as I test and revise those choices.
+I still need to decide whether using both height and colour for duration adds useful emphasis or unnecessary repetition. I will also review whether the connecting line suggests a continuous measurement even though eclipses are separate events.
