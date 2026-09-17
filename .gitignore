@@ -1,14 +1,9 @@
+# Made from data/ on every run. Commit out/; never commit site/.
+site/
+data/cache/
+
+# Machinery, not work.
+.venv/
+__pycache__/
 .DS_Store
 Thumbs.db
-desktop.ini
-.vscode/
-.idea/
-__pycache__/
-*.pyc
-.venv/
-node_modules/
-.env
-.env.*
-*.pem
-*.key
-
