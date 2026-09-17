@@ -140,11 +140,15 @@ def draw_wheel(ax, eclipses, upto=None, show_extremes=True):
 
 
 def main():
+    rows = eclipse_rows(DATA)
     eclipses = total_eclipses(DATA)
 
-    print(f"{DATA.name}: {len(eclipse_rows(DATA))} eclipse records")
-    print(f"{len(eclipses)} total eclipses; first one: {eclipses[0]}")
-    print(f"duration is stored as {type(eclipses[0][1]).__name__}")
+    first_duration = eclipses[0][1]
+    print(f"{DATA.name}: {len(rows)} eclipse records")
+    print(f"first parsed row: {rows[0]}")
+    print(f"first totality duration: {first_duration}")
+    print(f"duration type: {type(first_duration).__name__}")
+    print(f"{len(eclipses)} total eclipses")
 
     fig, ax = plt.subplots(figsize=(8, 8), subplot_kw={"projection": "polar"})
     fig.patch.set_facecolor("#09070d")
@@ -154,6 +158,7 @@ def main():
     OUT.mkdir(exist_ok=True)
     fig.savefig(OUT / PICTURE, dpi=180)
     print(f"saved out/{PICTURE}")
+    plt.show()
 
 
 if __name__ == "__main__":
