@@ -3,14 +3,14 @@
 # dependencies = ["requests"]
 # ///
 
-"""Fetch NASA's lunar-eclipse table once and cache the raw HTML in data/."""
+"""Fetch NASA's century lunar-eclipse catalogue and cache the raw HTML."""
 
 from pathlib import Path
 
 import requests
 
-URL = "https://eclipse.gsfc.nasa.gov/LEdecade/LEdecade2021.html"
-FILE = "nasa-lunar-eclipses-2021-2030.html"
+URL = "https://eclipse.gsfc.nasa.gov/LEcat5/LE2001-2100.html"
+FILE = "nasa-lunar-eclipses-2001-2100.html"
 
 HERE = Path(__file__).parent
 DATA = HERE / "data"
@@ -40,4 +40,3 @@ def fetch(url, path):
 
 if __name__ == "__main__":
     fetch(URL, DATA / FILE)
-
