@@ -1,25 +1,24 @@
-# 月全食持续时间
+# Total Lunar Eclipse Duration
 
-![2021–2030 年月全食阶段持续时间](out/total-lunar-eclipse-duration.png)
+![Totality duration of total lunar eclipses from 2021 to 2030](out/total-lunar-eclipse-duration.png)
 
-## 自然现象
+## The phenomenon
 
-月食发生在月球进入地球阴影的时候。本项目关注月全食：当整个月面进入地球本影时，月球会明显变暗，并可能呈现红色。我想比较不同月全食的全食阶段是否一样长，因此把每一次事件的日期和全食持续时间画成横向柱状图。
+A lunar eclipse occurs when the Moon passes through Earth's shadow. This project focuses on total lunar eclipses, during which the entire Moon enters Earth's umbral shadow. The Moon becomes much darker and may appear red. I chose this phenomenon because every total lunar eclipse follows the same basic process, but the length of totality is not always the same. My picture compares how long the total phase lasts for eclipses occurring between 2021 and 2030.
 
-## 数据来源
+## The source
 
-数据来自 NASA Goddard Space Flight Center 的 [Lunar Eclipses: 2021–2030](https://eclipse.gsfc.nasa.gov/LEdecade/LEdecade2021.html) 网页表格。`fetch.py` 只下载一次原始 HTML，并把未经修改的网页保存到 `data/`。表格中的一行代表一次月食，包含日期、月食类型、本影食分、持续时间和可见地区。本图筛选类型为 `Total` 的记录，并把第二个持续时间转换成分钟；该数值表示全食阶段，而不是包括偏食阶段在内的整场月食。
+The data comes from NASA Goddard Space Flight Center's [Lunar Eclipses: 2021–2030](https://eclipse.gsfc.nasa.gov/LEdecade/LEdecade2021.html) table. Each row represents one lunar eclipse and includes its date, type, umbral magnitude, duration, and geographic region of visibility. `fetch.py` downloads the original HTML page once and saves the unchanged response in `data/`. The plotting script selects rows whose eclipse type is `Total`. NASA gives two durations for these rows; this project uses the second value, which is the duration of totality rather than the longer interval that also includes the partial phases. The durations are converted from hours and minutes into minutes before plotting.
 
-## 图像说明
+## What the picture shows
 
-每根横条代表一次月全食，长度表示全食阶段持续的分钟数，较亮的横条标出这十年中持续时间最长的一次。这种表达方便比较时间长短，但隐藏了月球经过地影的轨迹、可见地区、天气条件以及实际颜色。图中的暗红色是视觉选择，不代表 NASA 测得的月面颜色。
+Each horizontal bar represents one total lunar eclipse, and its length shows the duration of totality in minutes. The lighter bar identifies the longest totality in this decade. The chart makes the differences in duration easy to compare, but it leaves out the Moon's path through Earth's shadow, the places from which each eclipse is visible, observing conditions, and the Moon's actual colour. The dark red palette is a visual choice and does not represent a colour measurement from NASA.
 
-## 运行方法
+## Run it
 
 ```bash
 uv run fetch.py
 uv run plot.py
 ```
 
-`plot.py` 只读取已经保存在 `data/` 的文件，因此缓存建立后可以离线生成图像。
-
+After the source page has been cached in `data/`, `plot.py` reads only the local file and can generate the picture without an internet connection.
