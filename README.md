@@ -1,6 +1,8 @@
 # Total Lunar Eclipse Duration
 
-![Totality duration of total lunar eclipses from 2001 to 2100](out/total-lunar-eclipse-duration.png)
+![Animated century wheel of total lunar eclipses](out/lunar-eclipse-century-wheel.gif)
+
+![Still image of the completed eclipse wheel](out/total-lunar-eclipse-duration.png)
 
 ## The phenomenon
 
@@ -12,13 +14,14 @@ The data comes from NASA Goddard Space Flight Center's [Catalog of Lunar Eclipse
 
 ## What the picture shows
 
-Each point represents one total lunar eclipse. Its horizontal position is the date, while its vertical position and colour both show the duration of totality in minutes. Labels identify the shortest and longest events. The chart reveals the wide variation in duration and how it is distributed across the century, but it leaves out the Moon's path through Earth's shadow, visibility regions, observing conditions, and the Moon's actual colour. The red palette is a visual choice and does not represent a colour measurement from NASA.
+The animation builds a century wheel one eclipse at a time. Date moves clockwise around the circle, while distance from the centre, point size, and brightness respond to the duration of totality. The changing radius turns the sequence into an irregular orbit, and labels identify the shortest and longest events. This transformation shows rhythm and variation across the century, but it leaves out the Moon's path through Earth's shadow, visibility regions, observing conditions, and actual colour. The glowing palette is an artistic choice rather than a colour measurement from NASA.
 
 ## Run it
 
 ```bash
 uv run fetch.py
 uv run plot.py
+uv run animate.py
 ```
 
 After the source page has been cached in `data/`, `plot.py` reads only the local file and can generate the picture without an internet connection.

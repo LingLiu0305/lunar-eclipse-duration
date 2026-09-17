@@ -10,8 +10,8 @@ I kept the suggestion to cache NASA's original HTML page in `data/` and parse th
 
 ## One thing I rejected
 
-I rejected the initial assumption that NASA would provide a separate JSON download. I also rejected the first horizontal bar chart after expanding the data from ten years to a full century: 85 labelled bars would be too crowded to read. Manual transcription would remove the connection to the original published file and could introduce mistakes. Instead, the program parses NASA's fixed-width catalogue and uses points to show the dates and durations of all 85 total eclipses.
+I rejected the initial assumption that NASA would provide a separate JSON download. I also rejected both the first horizontal bar chart and a conventional time-series plot. The bars became crowded after expanding to 85 eclipses, while the time series explained the values but did not express the repeating astronomical character of the subject. Instead, the program parses NASA's fixed-width catalogue and maps the century around a circle, revealing each eclipse in an animation.
 
 ## What I will review next
 
-I still need to decide whether using both height and colour for duration adds useful emphasis or unnecessary repetition. I will also review whether the connecting line suggests a continuous measurement even though eclipses are separate events.
+I still need to review whether using distance, point size, and brightness for the same duration adds useful emphasis or unnecessary repetition. The connecting line is an artistic trace through separate events rather than a continuous physical measurement, so the README states what the transformation shows and what it leaves out.
