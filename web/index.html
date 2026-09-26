@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eeede8">
+  <meta name="description" content="选择年份，观看月食从初亏到复圆。基于 NASA 2001–2100 年月食目录的交互天文图谱。">
+  <title>Lunar Atlas · 月食观测图谱</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23262eaa'/%3E%3Ccircle cx='27' cy='15' r='16' fill='%23eeede8'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="#" aria-label="Lunar Atlas 首页"><span class="brand-mark" aria-hidden="true"></span>LUNAR <span>ATLAS</span><small>月食观测图谱</small></a>
+    <nav aria-label="主导航"><a class="active" href="#observatory">观测台 <span>01</span></a><a href="#about">数据与方法 <span>02</span></a></nav>
+    <span class="edition mono">CELESTIAL STUDIES — VOL. 01</span>
+  </header>
+
+  <main id="observatory">
+    <section class="intro" aria-labelledby="page-title">
+      <div><p class="eyebrow"><span class="blue-dot"></span> AN INTERACTIVE ECLIPSE ARCHIVE / 2001—2100</p><h1 id="page-title">光与影之间<span class="title-star" aria-hidden="true">✳</span></h1><p class="intro-copy">选择一个年份，看地球的影子，缓缓经过月亮。</p></div>
+      <div class="year-control"><label class="eyebrow" for="year">01 / SELECT A YEAR · 选择年份</label><div class="year-row"><button id="previous-year" class="arrow-button" aria-label="上一年">←</button><select id="year" aria-describedby="year-note" disabled><option>2026</option></select><button id="next-year" class="arrow-button" aria-label="下一年">→</button></div><p id="year-note">加载 NASA 月食目录…</p></div>
+    </section>
+
+    <div id="load-error" class="error" role="alert" hidden></div>
+    <section class="observatory" aria-label="月食交互观测台">
+      <aside class="events-panel">
+        <div class="panel-heading"><span class="eyebrow">年度月食</span><span class="mono" id="event-count">— EVENTS</span></div>
+        <div id="events" class="event-list" aria-label="选择当年月食"></div>
+        <div class="small-annotation"><span class="annotation-cross">+</span><p>每一次月食，<br>都是光、地球与月亮<br>短暂的相遇。</p><span class="mono">SUN → EARTH → MOON</span></div>
+        <div class="legend"><span><i class="legend-dot total"></i>月全食</span><span><i class="legend-dot partial"></i>月偏食</span><span><i class="legend-dot penumbral"></i>半影月食</span></div>
+      </aside>
+
+      <div class="instrument">
+        <div class="instrument-top mono"><span>GEOCENTRIC VIEW</span><span id="catalogue-id">CAT. —</span></div>
+        <canvas id="moon" width="900" height="900" role="img" aria-label="月球进入和离开地球阴影的示意动画"></canvas>
+        <div class="instrument-caption"><span class="live-dot"></span><span id="phase-caption">正在加载观测数据</span><span class="mono" id="phase-code">—</span></div>
+        <p class="schematic-note">月面与轨迹为艺术化示意 · 非实况影像</p>
+      </div>
+
+      <aside class="readout-panel">
+        <p class="eyebrow">02 / OBSERVATION · 观测时刻</p>
+        <div class="date-display" id="current-date">2026.03.03</div>
+        <div class="clock-display mono" id="current-time">—:—:—</div>
+        <label class="zone-control"><span class="sr-only">时间基准</span><select id="timezone"><option value="8">香港时间 · UT+8（近似）</option><option value="0">世界时 · UT</option></select><span aria-hidden="true">↗</span></label>
+        <div class="stage-readout"><span class="eyebrow">当前阶段</span><h2 id="phase-name">准备观测</h2><p id="phase-description">正在读取本地数据。</p></div>
+        <dl class="metrics"><div><dt>全食持续 <span>TOTALITY</span></dt><dd id="total-duration">— <small>min</small></dd></div><div><dt>本影食分 <span>MAGNITUDE</span></dt><dd id="magnitude">—</dd></div></dl>
+        <a id="nasa-event" class="source-link" href="https://eclipse.gsfc.nasa.gov/LEcat5/LE2001-2100.html" target="_blank" rel="noreferrer">查看 NASA 原始星图 <span>↗</span></a>
+      </aside>
+    </section>
+
+    <section class="transport" aria-label="动画播放控制">
+      <div class="transport-top"><div class="playback-buttons"><button id="play" class="play-button" disabled><span id="play-icon" aria-hidden="true">Ⅱ</span><span id="play-label">暂停</span></button><button id="replay" class="replay-button" aria-label="重新播放本次月食" disabled>↺ <span>重播</span></button></div><p class="playback-status" id="playback-status" role="status">准备观测</p><label class="speed-control" for="speed">播放速度 <select id="speed"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select></label></div>
+      <div class="timeline-wrap"><div id="phase-bands" class="phase-bands" aria-hidden="true"></div><input id="timeline" type="range" min="0" max="1000" value="0" aria-label="月食进程" disabled></div>
+      <div class="timeline-extents mono"><span id="start-time">—</span><span>拖动时间轴，探索每一个阶段</span><span id="end-time">—</span></div>
+      <div id="contacts" class="contacts" aria-label="月食关键时刻，点击跳转"></div>
+    </section>
+
+    <section class="about" id="about"><div><p class="eyebrow">03 / BEHIND THE OBSERVATION</p><h2>让数据成为<br><em>可以探索的时间。</em></h2></div><div><h3>真实记录，示意重现</h3><p>收录 NASA 2001–2100 年的 228 次月食。食甚世界时由目录的动力学时减去 ΔT 得到；其他接触时刻以食甚为中心，根据各阶段持续时间对称推算，均为近似值。日期会随时间基准切换及跨日自动更新。</p><p>月面纹理、阴影运动与铜红色为艺术化示意，不代表真实地形、精确天体位置或实测颜色。香港时间仅为 UT+8 的近似换算，不表示该次月食在香港可见。未来时刻沿用此版目录的预测。</p><a href="https://eclipse.gsfc.nasa.gov/LEcat5/LEcatkey.html" target="_blank" rel="noreferrer">NASA 数据字段说明 ↗</a></div><div class="archive-stat"><strong>228<span>次月食</span></strong><p>85 次月全食 · 57 次月偏食<br>86 次半影月食</p><span class="mono">ONE CENTURY. COUNTLESS SHADOWS.</span></div></section>
+  </main>
+  <footer><span>LUNAR ATLAS <span class="footer-separator">/</span> SD5913 · WEEK 04</span><span>Eclipse Predictions by Fred Espenak and Jean Meeus (NASA's GSFC)</span><a href="#observatory">返回观测台 ↑</a></footer>
+  <noscript><p class="error">请启用 JavaScript 以播放交互月食动画。</p></noscript>
+</body>
+</html>
