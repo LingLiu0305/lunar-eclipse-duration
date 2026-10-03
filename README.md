@@ -28,7 +28,7 @@ in the artwork. No browser or web server is required. All interface text is Engl
 - **Data & phase details** reveals phase dates/times, full-event duration, scientific limits,
   and clickable time-zone and playback-speed settings. These are not permanent
   panels on the main canvas.
-- **Browsing year** and **Eclipse n of N selected** distinguish the year from
+- **Year** and **Eclipse n of N selected** distinguish the year from
   the current event. The event's catalogue date stays fixed in the information
   group beside the Moon; the animation date may change across midnight.
 - **Playing**, **Paused**, and **Complete** show the current playback state,
@@ -70,13 +70,19 @@ A lunar eclipse occurs when the Moon passes through Earth's shadow. This project
 
 ## The source
 
-The data comes from NASA Goddard Space Flight Center's [Catalog of Lunar Eclipses: 2001 to 2100](https://eclipse.gsfc.nasa.gov/LEcat5/LE2001-2100.html). Its 228 records describe the date, type, magnitude, phase durations, and location of greatest eclipse for every lunar eclipse in the century. `fetch.py` downloads the original HTML page once and saves the unchanged response in `data/`. The plotting script reads the fixed-width catalogue, selects its 85 total eclipses, and uses NASA's total-phase duration in minutes.
+The data comes from NASA Goddard Space Flight Center's [Catalog of Lunar Eclipses: 2001 to 2100](https://eclipse.gsfc.nasa.gov/LEcat5/LE2001-2100.html). Its 228 rows each represent one lunar eclipse, with its date, type, magnitude, phase durations, and location of greatest eclipse. These are calculated astronomical catalogue values, including future predictions, not 228 direct observations. `fetch.py` downloads the original HTML page once and saves the unchanged response in `data/`. The plotting script reads the fixed-width catalogue, selects its 85 total eclipses, and uses NASA's total-phase duration in minutes.
 
 ## What the picture shows
 
-The current overview plots one equal-size dot for each of the 85 total lunar eclipses. Horizontal position shows the eclipse date from 2001 to 2100; vertical position shows the published duration of totality in minutes. Explicit axis titles and units make short and long eclipses directly comparable. Selecting a dot opens a separate focus view that animates the Moon through Earth's shadow and labels the changing date, time, and phase. The picture leaves out visibility regions, observing conditions, and actual Moon colour. The warm palette and lunar surface are artistic choices rather than colour or terrain measurements from NASA.
+The overview compares 85 total lunar eclipses from 2001 to 2100: each equal-size dot places the eclipse date on the horizontal axis and its totality duration in minutes on the vertical axis, with the shortest and longest events labeled. Selecting a dot opens an illustrative Moon animation with the changing date, time, and phase. The chart omits partial and penumbral events (available through year selection), while the animation omits geographic visibility and observing conditions; the interface colours and lunar texture are artistic choices, not measurements.
 
 ## Run it
+
+```bash
+uv run atlas.py
+```
+
+### Rebuild the original artwork (optional)
 
 ```bash
 uv run fetch.py

@@ -1,5 +1,19 @@
 # Process
 
+## Submission review — 4 October 2026
+
+I used Codex to check the repository against the teacher's Assignment 2 brief.
+The current submission is the Moonlit Navy scatter overview and its separate
+eclipse player; later sections record earlier experiments, not current UI
+behaviour. I kept the original wheel images as clearly labeled development
+history. The obsolete selection-motion GIF is not part of the submission.
+The review corrected stale palette wording, shortened the picture explanation
+to three sentences, clarified the current run command, and distinguished NASA's
+calculated catalogue predictions from direct observations. Local verification
+passed 36 Python tests, four JavaScript tests, and the assignment structure
+checker. These checks do not establish artistic quality or replace Canvas
+submission of the repository URL.
+
 ## Moonlit Navy theme — 3 October 2026
 
 I selected the Moonlit Navy option proposed by Codex: deep navy, soft white
@@ -207,7 +221,7 @@ additional measurements or orbital geometry that the data does not contain.
 Using Codex, I refined the existing scatter-plot overview instead of returning
 to the radial artwork. I kept the warm paper palette and serif headline, but
 removed the large introductory sidebar so the data occupies most of the width.
-The headline gives the rounded observed catalogue range (5–103 minutes), while
+The headline gives the rounded catalogue range (5–103 minutes), while
 the two extreme annotations retain exact durations (4.7 and 103.0 minutes).
 The subtitle limits the claim to the total phase and the years 2001–2100;
 the source footer notes that the catalogue includes future predictions.
