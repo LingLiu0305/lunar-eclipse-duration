@@ -555,7 +555,7 @@ def main():
         print(f"Saved {args.snapshot}")
     else:
         if args.paused: app.state.seek(0);app.update_frame()
-        print("Lunar Passage: click the outer ring for a year; click the Moon to pause.",flush=True)
+        print("Lunar Passage: choose a year on the axis; click a dot or date to play an eclipse.",flush=True)
         app.plt.show()
 
 

@@ -1,5 +1,16 @@
 # Process
 
+## Moonlit Navy theme — 3 October 2026
+
+I selected the Moonlit Navy option proposed by Codex: deep navy, soft white
+text, blue-grey data points, and amber interaction accents. The UI/UX review
+emphasised contrast and retained outlines so colour is not the only selection
+cue. I rejected the design search's neon/glitch suggestions; they would compete
+with the data. Layout, data encoding, and playback remain unchanged. The Moon's
+illustrative red eclipse shading is independent of the UI palette. A regression
+test checks text contrast against the dark background in overview, playback,
+and details, alongside rendered preview inspection.
+
 ## Tools used
 
 I used ChatGPT to help me understand the assignment requirements, identify a suitable public data source, and create the first working structure of the project. I also used it to explain the difference between a downloadable data file and a table published directly on a web page. The eclipse data itself comes from NASA's published catalogue.
@@ -172,3 +183,39 @@ main century graphic remains limited to total eclipses; all event types remain
 accessible through the year view. Regression checks cover navigation, enlarged
 but stable focus geometry, same-year event selection, return state, hover preview,
 playback, settings, and cross-midnight dates.
+
+## Revision — direct time and duration comparison
+
+The circular overview remained visually distinctive, but user review showed that
+its data meaning was not immediate. A century is a bounded timeline rather than a
+natural cycle, and radial distance made values at different angles harder to
+compare. I therefore replaced the overview wheel with a Cartesian scatter plot.
+The horizontal axis now gives the eclipse date from 2001 to 2100, the vertical
+axis gives totality duration in minutes, and every equal-size dot is one total
+lunar eclipse. The question “How long does a total lunar eclipse last?” is the
+main chart title; axis titles and units are printed on the picture itself.
+
+The approved editorial system remains: ivory background, coral data marks, brown
+typography, and teal selection feedback. A quiet teal band marks the browsing
+year. Hovering that year emphasizes its dots; clicking the chart opens the year,
+while clicking a dot opens the exact eclipse. The separate large-Moon focus view
+is unchanged. This iteration deliberately rejects connecting lines, variable dot
+sizes, and a decorative central Moon in the overview because they would imply
+additional measurements or orbital geometry that the data does not contain.
+# Readability refinement — 3 October 2026
+
+Using Codex, I refined the existing scatter-plot overview instead of returning
+to the radial artwork. I kept the warm paper palette and serif headline, but
+removed the large introductory sidebar so the data occupies most of the width.
+The headline gives the rounded observed catalogue range (5–103 minutes), while
+the two extreme annotations retain exact durations (4.7 and 103.0 minutes).
+The subtitle limits the claim to the total phase and the years 2001–2100;
+the source footer notes that the catalogue includes future predictions.
+
+I separated browsing from playback: choosing a year only highlights its band
+and updates date buttons; choosing a specific eclipse opens the existing large
+Moon view. Clicking empty plot space now does nothing. This rejects implicit
+navigation and avoids making the user read instructions to predict an action.
+Tests cover these state transitions, the extrema, and existing playback flows.
+Rendered previews are checked for layout, but this is not a first-time-user
+comprehension study or a claim of measured usability improvement.
